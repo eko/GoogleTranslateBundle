@@ -1,5 +1,5 @@
-GoogleTranslateBundle - A bundle to deals with Google Translate API
-===================================================================
+GoogleTranslateBundle
+=====================
 
 [![Build Status](https://secure.travis-ci.org/eko/GoogleTranslateBundle.png?branch=master)](http://travis-ci.org/eko/GoogleTranslateBundle)
 
