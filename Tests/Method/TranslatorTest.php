@@ -45,7 +45,7 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
     /**
      * Returns mock detector
      *
-     * @return \Fullsix\GoogleTranslateBundle\Translate\Method\Detector
+     * @return \Eko\GoogleTranslateBundle\Translate\Method\Detector
      */
     public function getMockDetector()
     {
