@@ -1,0 +1,17 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="eko.google_translate.detector" class="Eko\GoogleTranslateBundle\Translate\Method\Detector">
+            <argument>%eko_google_translate.api_key%</argument>
+        </service>
+
+        <service id="eko.google_translate.translator" class="Eko\GoogleTranslateBundle\Translate\Method\Translator">
+            <argument>%eko_google_translate.api_key%</argument>
+            <argument type="service" id="eko.google_translate.detector" />
+        </service>
+    </services>
+</container>

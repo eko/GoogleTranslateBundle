@@ -1,0 +1,28 @@
+{
+    "name": "eko/googletranslatebundle",
+    "type": "library",
+    "description": "A Symfony bundle to deals with Google Translate API",
+    "keywords": ["google", "translate", "bundle", "api", "detect", "language"],
+    "homepage": "http://github.com/eko/GoogleTranslateBundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vincent Composieux",
+            "email": "vincent.composieux@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2",
+        "symfony/framework-bundle": ">=2.0,<2.4-dev",
+        "guzzle/guzzle": "dev-master"
+    },
+    "autoload": {
+        "psr-0": { "Eko\\GoogleTranslateBundle": "" }
+    },
+    "target-dir": "Eko/GoogleTranslateBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}
