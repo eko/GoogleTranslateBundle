@@ -7,7 +7,7 @@ use Eko\GoogleTranslateBundle\Translate\Method\Detector;
 /**
  * Detector class test
  *
- * @author Vincent Composieux <composieux@ekino.com>
+ * @author Vincent Composieux <vincent.composieux@gmail.com>
  */
 class DetectorTest extends \PHPUnit_Framework_TestCase
 {

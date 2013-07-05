@@ -7,7 +7,7 @@ use Eko\GoogleTranslateBundle\Translate\Method\Translator;
 /**
  * Translator class test
  *
- * @author Vincent Composieux <composieux@ekino.com>
+ * @author Vincent Composieux <vincent.composieux@gmail.com>
  */
 class TranslatorTest extends \PHPUnit_Framework_TestCase
 {
