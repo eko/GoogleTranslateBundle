@@ -29,6 +29,11 @@ class Client {
      * @var Client $client A Guzzle client instance
      */
     protected $client;
+    
+    /**
+     * @string string $url API translation url
+     */
+    protected $url = null;
 
     /**
      * Constructor
