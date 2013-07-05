@@ -50,7 +50,8 @@ Retrieve the detector service and call the `detect()` method:
 
 ```php
 $detector = $this->get('eko.google_translate.detector');
-$value = $detector->detect('Hi, this is my string to detect!'); // This will return 'en'
+$value = $detector->detect('Hi, this is my string to detect!');
+// This will return 'en'
 ```
 
 ### Translate a string
@@ -59,7 +60,8 @@ Retrieve the translator service and call the `translate()` method:
 
 ```php
 $translator = $this->get('eko.google_translate.translator');
-$value = $translator->translate('Hi, this is my text to detect!', 'fr', 'en'); // This will return 'Salut, ceci est mon texte à détecter!'
+$value = $translator->translate('Hi, this is my text to detect!', 'fr', 'en');
+// This will return 'Salut, ceci est mon texte à détecter!'
 ```
 
 ### Translate a string from unknown language (use detector)
@@ -68,7 +70,8 @@ Retrieve the translator service and call the `translate()` method without the so
 
 ```php
 $translator = $this->get('eko.google_translate.translator');
-$value = $translator->translate('Hi, this is my text to detect!', 'fr'); // This will return 'Salut, ceci est mon texte à détecter!'
+$value = $translator->translate('Hi, this is my text to detect!', 'fr');
+// This will return 'Salut, ceci est mon texte à détecter!'
 ```
 
 Notice: this will consume a detector API call.
