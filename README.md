@@ -13,7 +13,18 @@ Features
 Installation
 ------------
 
+Add the bundle to your `composer.json` file:
+
+```json
+{
+    "require" :  {
+        "eko/googletranslatebundle": "dev-master"
+    }
+}
+```
+
 Add this to app/AppKernel.php
+
 ```php
 <?php
     public function registerBundles()
