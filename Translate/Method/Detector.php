@@ -40,7 +40,7 @@ class Detector extends Client {
      */
     public function detect($query)
     {
-        $this->client->setConfig(array(
+        $this->getClient()->setConfig(array(
             'key'    => $this->apiKey,
             'query'  => urlencode($query)
         ));
@@ -59,7 +59,7 @@ class Detector extends Client {
     {
         $result = null;
 
-        $json = $this->client->get()->send()->json();
+        $json = $this->getClient()->get()->send()->json();
 
         if (isset($json['data']['detections'])) {
             $current = current(current($json['data']['detections']));

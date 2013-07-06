@@ -17,15 +17,24 @@ class DetectorTest extends \PHPUnit_Framework_TestCase
     protected $detector;
 
     /**
+     * @var \Guzzle\Http\Message\Response mock
+     */
+    protected $responseMock;
+
+    /**
      * Set up methods services
      */
     protected function setUp()
     {
         $this->detector = $this->getMock(
             '\Eko\GoogleTranslateBundle\Translate\Method\Detector',
-            array('process'),
+            array('getClient'),
             array('fakeapikey')
         );
+
+        $clientMock = $this->getClientMock();
+
+        $this->detector->expects($this->any())->method('getClient')->will($this->returnValue($clientMock));
     }
 
     /**
@@ -33,12 +42,52 @@ class DetectorTest extends \PHPUnit_Framework_TestCase
      */
     public function testSimpleDetect()
     {
-        $this->detector
-            ->expects($this->any())
-            ->method('process')
-            ->will($this->returnValue('en'));
+        // Given
+        $this->responseMock->expects($this->any())->method('json')->will($this->returnValue(
+            array('data' => array('detections' => array(array(array('language' => 'en')))))
+        ));
 
+        // When
         $language = $this->detector->detect('hi');
+
+        // Then
         $this->assertEquals($language, 'en', 'Should return language "en"');
+    }
+
+    /**
+     * Test exception detect method
+     */
+    public function testExceptionDetect()
+    {
+        $this->responseMock->expects($this->any())->method('json')->will($this->returnValue(
+            array('data' => array('detections' => array(array(array('language' => Detector::UNDEFINED_LANGUAGE)))))
+        ));
+
+        $this->setExpectedException('\Eko\GoogleTranslateBundle\Exception\UnableToDetectException');
+
+        $this->detector->detect('undefined');
+    }
+
+    /**
+     * Returns Guzzle HTTP client mock and sets response mock property
+     *
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getClientMock()
+    {
+        $clientMock = $this->getMockBuilder('\Guzzle\Http\ClientInterface')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->responseMock = $this->getMockBuilder('\Guzzle\Http\Message\Response')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $requestMock = $this->getMock('\Guzzle\Http\Message\RequestInterface');
+
+        $clientMock->expects($this->any())->method('get')->will($this->returnValue($requestMock));
+        $requestMock->expects($this->any())->method('send')->will($this->returnValue($this->responseMock));
+
+        return $clientMock;
     }
 }

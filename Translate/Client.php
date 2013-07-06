@@ -29,9 +29,9 @@ class Client {
      * @var Client $client A Guzzle client instance
      */
     protected $client;
-    
+
     /**
-     * @string string $url API translation url
+     * @var string $url API translation url
      */
     protected $url = null;
 
@@ -44,5 +44,15 @@ class Client {
     {
         $this->apiKey = $apiKey;
         $this->client = new GuzzleClient($this->url);
+    }
+
+    /**
+     * Returns Guzzle HTTP client instance
+     *
+     * @return GuzzleClient
+     */
+    public function getClient()
+    {
+        return $this->client;
     }
 }
