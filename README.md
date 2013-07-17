@@ -100,7 +100,7 @@ $languages = $this->get('eko.google_translate.languages')->get();
 // )
 ```
 
-### Obtain all languages codes available with their names translated in a language
+### Obtain all languages codes available with their names translated
 
 Retrieve the languages service and call the `get()` method with a target language argument:
 
