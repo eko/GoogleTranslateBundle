@@ -9,6 +9,7 @@ Features
  * Detect language used for a string
  * Translate a string from a source language to a target one
  * Translate a string into a target language by using language auto-detection (consume 1 more API call)
+ * Retrieve all languages available on API and obtain language names in a given language
 
 Installation
 ------------
@@ -84,5 +85,34 @@ $translator = $this->get('eko.google_translate.translator');
 $value = $translator->translate('Hi, this is my text to detect!', 'fr');
 // This will return 'Salut, ceci est mon texte à détecter!'
 ```
+
+### Obtain all languages codes available
+
+Retrieve the languages service and call the `get()` method without any argument:
+
+```php
+$languages = $this->get('eko.google_translate.languages')->get();
+// This will return:
+// array(
+//     array('language' => 'en'),
+//     array('language' => 'fr'),
+//     ...
+// )
+```
+
+### Obtain all languages codes available with their names translated in a language
+
+Retrieve the languages service and call the `get()` method with a target language argument:
+
+```php
+$languages = $this->get('eko.google_translate.languages')->get('fr');
+// This will return:
+// array(
+//     array('language' => 'en', 'name' => 'Anglais'),
+//     array('language' => 'fr', 'name' => 'Français'),
+//     ...
+// )
+```
+
 
 Notice: this will consume a detector API call.

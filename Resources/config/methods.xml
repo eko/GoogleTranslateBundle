@@ -13,5 +13,9 @@
             <argument>%eko_google_translate.api_key%</argument>
             <argument type="service" id="eko.google_translate.detector" />
         </service>
+
+        <service id="eko.google_translate.languages" class="Eko\GoogleTranslateBundle\Translate\Method\Languages">
+            <argument>%eko_google_translate.api_key%</argument>
+        </service>
     </services>
 </container>
