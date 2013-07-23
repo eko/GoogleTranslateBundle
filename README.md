@@ -1,6 +1,7 @@
 GoogleTranslateBundle
 =====================
 
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/41d3d242-a0fe-424c-8cb1-65327f89df11/big.png)](https://insight.sensiolabs.com/projects/41d3d242-a0fe-424c-8cb1-65327f89df11)
 [![Build Status](https://secure.travis-ci.org/eko/GoogleTranslateBundle.png?branch=master)](http://travis-ci.org/eko/GoogleTranslateBundle)
 
 Features
