@@ -110,8 +110,6 @@ class Method {
                 'memory_peak'  => null,
             );
 
-            $name = sprintf('%s (method: %s)', $query, $name);
-
             return $this->stopwatch->start($name);
         }
     }
@@ -120,9 +118,8 @@ class Method {
      * Stops the profiling
      *
      * @param StopwatchEvent $event A stopwatchEvent instance
-     * @param string         $name  Method name
      */
-    protected function stopProfiling(StopwatchEvent $event = null, $name)
+    protected function stopProfiling(StopwatchEvent $event = null)
     {
         if ($this->stopwatch instanceof Stopwatch) {
             $event->stop();

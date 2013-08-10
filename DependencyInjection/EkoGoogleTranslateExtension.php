@@ -17,8 +17,6 @@ use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 
-use Eko\GoogleTranslateBundle\DependencyInjection\Compiler\RegisterCollectorCompilerPass;
-
 /**
  * This is the class that loads and manages your bundle configuration
  *
@@ -50,7 +48,7 @@ class EkoGoogleTranslateExtension extends Extension
      */
     protected function loadProfilerCollector(ContainerBuilder $container, XmlFileLoader $loader)
     {
-        if ($container->has('kernel.debug')) {
+        if ($container->hasParameter('kernel.debug')) {
             $loader->load('collector.xml');
 
             foreach ($container->findTaggedServiceIds('eko.google_translate.method') as $id => $attributes) {
