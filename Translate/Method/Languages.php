@@ -10,7 +10,8 @@
 
 namespace Eko\GoogleTranslateBundle\Translate\Method;
 
-use Eko\GoogleTranslateBundle\Translate\Client;
+use Eko\GoogleTranslateBundle\Translate\Method;
+use Eko\GoogleTranslateBundle\Translate\MethodInterface;
 
 /**
  * Class Languages
@@ -19,7 +20,7 @@ use Eko\GoogleTranslateBundle\Translate\Client;
  *
  * @package Eko\GoogleTranslateBundle\Translate\Method
  */
-class Languages extends Client {
+class Languages extends Method implements MethodInterface {
     /**
      * @var string $url Google Translate API languages base url
      */
@@ -57,8 +58,22 @@ class Languages extends Client {
      */
     protected function process()
     {
+        $event = $this->startProfiling($this->getName(), 'get');
+
         $json = $this->getClient()->get()->send()->json();
 
-        return isset($json['data']['languages']) ? $json['data']['languages'] : array();
+        $result = isset($json['data']['languages']) ? $json['data']['languages'] : array();
+
+        $this->stopProfiling($event, $this->getName(), $result);
+
+        return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'Languages';
     }
 }

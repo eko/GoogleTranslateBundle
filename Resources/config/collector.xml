@@ -1,0 +1,14 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <service id="eko.google_translate.data_collector.translate" class="Eko\GoogleTranslateBundle\DataCollector\TranslateDataCollector">
+            <tag name="data_collector" template="EkoGoogleTranslateBundle:Collector:translate" id="eko.google_translate.data_collector.translate" />
+
+            <argument type="service" id="eko.google_translate.method_manager" />
+        </service>
+    </services>
+</container>

@@ -11,7 +11,9 @@
 namespace Eko\GoogleTranslateBundle\Translate\Method;
 
 use Eko\GoogleTranslateBundle\Exception\UnableToDetectException;
-use Eko\GoogleTranslateBundle\Translate\Client;
+
+use Eko\GoogleTranslateBundle\Translate\Method;
+use Eko\GoogleTranslateBundle\Translate\MethodInterface;
 
 /**
  * Class Translator
@@ -20,7 +22,7 @@ use Eko\GoogleTranslateBundle\Translate\Client;
  *
  * @package Eko\GoogleTranslateBundle\Translate\Method
  */
-class Detector extends Client {
+class Detector extends Method implements MethodInterface {
     /**
      * Undefined language Google Translate API detector value constant
      */
@@ -59,7 +61,11 @@ class Detector extends Client {
     {
         $result = null;
 
-        $json = $this->getClient()->get()->send()->json();
+        $client = $this->getClient();
+
+        $event = $this->startProfiling($this->getName(), $client->getConfig('query'));
+
+        $json = $client->get()->send()->json();
 
         if (isset($json['data']['detections'])) {
             $current = current(current($json['data']['detections']));
@@ -70,6 +76,16 @@ class Detector extends Client {
             }
         }
 
+        $this->stopProfiling($event, $this->getName(), $result);
+
         return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'Detector';
     }
 }

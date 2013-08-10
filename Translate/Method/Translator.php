@@ -10,8 +10,11 @@
 
 namespace Eko\GoogleTranslateBundle\Translate\Method;
 
-use Eko\GoogleTranslateBundle\Translate\Client;
+use Symfony\Component\Stopwatch\Stopwatch;
+
+use Eko\GoogleTranslateBundle\Translate\Method;
 use Eko\GoogleTranslateBundle\Translate\Method\Detector;
+use Eko\GoogleTranslateBundle\Translate\MethodInterface;
 
 /**
  * Class Translator
@@ -20,7 +23,7 @@ use Eko\GoogleTranslateBundle\Translate\Method\Detector;
  *
  * @package Eko\GoogleTranslateBundle\Translate\Method
  */
-class Translator extends Client {
+class Translator extends Method implements MethodInterface {
     /**
      * @var Detector $detector Detector method service
      */
@@ -34,14 +37,15 @@ class Translator extends Client {
     /**
      * Constructor
      *
-     * @param string   $apiKey   Google Translate API key
-     * @param Detector $detector A Detector service
+     * @param string    $apiKey    Google Translate API key
+     * @param Detector  $detector  A Detector service
+     * @param Stopwatch $stopwatch Symfony profiler stopwatch service
      */
-    public function __construct($apiKey, Detector $detector)
+    public function __construct($apiKey, Detector $detector, Stopwatch $stopwatch = null)
     {
         $this->detector = $detector;
 
-        return parent::__construct($apiKey);
+        return parent::__construct($apiKey, $stopwatch);
     }
 
     /**
@@ -89,7 +93,16 @@ class Translator extends Client {
     {
         $result = null;
 
-        $json = $this->getClient()->get()->send()->json();
+        $client = $this->getClient();
+
+        $event = $this->startProfiling(
+            $this->getName(),
+            $client->getConfig('query'),
+            $client->getConfig('source'),
+            $client->getConfig('target')
+        );
+
+        $json = $client->get()->send()->json();
 
         if (isset($json['data']['translations'])) {
             $current = current($json['data']['translations']);
@@ -97,6 +110,16 @@ class Translator extends Client {
             $result = $current['translatedText'];
         }
 
+        $this->stopProfiling($event, $this->getName(), $result);
+
         return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'Translator';
     }
 }

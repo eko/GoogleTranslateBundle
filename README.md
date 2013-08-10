@@ -12,6 +12,7 @@ Features
  * Translate a string from a source language to a target one
  * Translate a string into a target language by using language auto-detection (consume 1 more API call)
  * Retrieve all languages available on API and obtain language names in a given language
+ * Profile detector / translate / languages list API calls in the Symfony profiler!
 
 Installation
 ------------

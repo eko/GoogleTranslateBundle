@@ -14,6 +14,10 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\DependencyInjection\Reference;
+
+use Eko\GoogleTranslateBundle\DependencyInjection\Compiler\RegisterCollectorCompilerPass;
 
 /**
  * This is the class that loads and manages your bundle configuration
@@ -34,5 +38,27 @@ class EkoGoogleTranslateExtension extends Extension
         $loader->load('methods.xml');
 
         $container->setParameter('eko_google_translate.api_key', $config['api_key']);
+
+        $this->loadProfilerCollector($container, $loader);
+    }
+
+    /**
+     * Loads profiler collector for correct environments
+     *
+     * @param ContainerBuilder $container Symfony dependency injection container
+     * @param XmlFileLoader    $loader    XML file loader
+     */
+    protected function loadProfilerCollector(ContainerBuilder $container, XmlFileLoader $loader)
+    {
+        if ($container->has('kernel.debug')) {
+            $loader->load('collector.xml');
+
+            foreach ($container->findTaggedServiceIds('eko.google_translate.method') as $id => $attributes) {
+                $serviceDefinition = $container->getDefinition($id);
+                $serviceDefinition->addArgument(new Reference('debug.stopwatch'));
+
+                $container->setDefinition($id, $serviceDefinition);
+            }
+        }
     }
 }
