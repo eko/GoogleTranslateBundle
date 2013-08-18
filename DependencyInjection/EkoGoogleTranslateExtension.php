@@ -48,7 +48,7 @@ class EkoGoogleTranslateExtension extends Extension
      */
     protected function loadProfilerCollector(ContainerBuilder $container, XmlFileLoader $loader)
     {
-        if ($container->hasParameter('kernel.debug')) {
+        if ($container->getParameter('kernel.debug')) {
             $loader->load('collector.xml');
 
             foreach ($container->findTaggedServiceIds('eko.google_translate.method') as $id => $attributes) {
