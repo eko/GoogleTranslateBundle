@@ -44,7 +44,7 @@ class Detector extends Method implements MethodInterface {
     {
         $this->getClient()->setConfig(array(
             'key'    => $this->apiKey,
-            'query'  => urlencode($query)
+            'query'  => $query
         ));
 
         return $this->process();
