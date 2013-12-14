@@ -51,11 +51,14 @@ class EkoGoogleTranslateExtension extends Extension
         if ($container->getParameter('kernel.debug')) {
             $loader->load('collector.xml');
 
-            foreach ($container->findTaggedServiceIds('eko.google_translate.method') as $id => $attributes) {
-                $serviceDefinition = $container->getDefinition($id);
+            $services = $container->findTaggedServiceIds('eko.google_translate.method');
+            $identifiers = array_keys($services);
+
+            foreach ($identifiers as $identifier) {
+                $serviceDefinition = $container->getDefinition($identifier);
                 $serviceDefinition->addArgument(new Reference('debug.stopwatch'));
 
-                $container->setDefinition($id, $serviceDefinition);
+                $container->setDefinition($identifier, $serviceDefinition);
             }
         }
     }
