@@ -55,6 +55,48 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test multiple translate method using an array
+     */
+    public function testMultipleTranslate()
+    {
+        // Given
+        $this->responseMock->expects($this->any())->method('json')->will($this->returnValue(
+            array('data' => array('translations' => array(array('translatedText' => 'salut'))))
+        ));
+
+        // When
+        $values = $this->translator->translate(array('hi', 'hi'), 'fr', 'en');
+
+        // Then
+        $this->assertCount(2, $values, 'Should return an array with 2 elements');
+
+        foreach ($values as $value) {
+            $this->assertEquals($value, 'salut', 'Should return "salut"');
+        }
+    }
+
+    /**
+     * Test multiple translate method using an array and the economic mode
+     */
+    public function testMultipleEconomicTranslate()
+    {
+        // Given
+        $this->responseMock->expects($this->once())->method('json')->will($this->returnValue(
+            array('data' => array('translations' => array(array('translatedText' => 'salut # salut'))))
+        ));
+
+        // When
+        $values = $this->translator->translate(array('hi', 'hi'), 'fr', 'en', true);
+
+        // Then
+        $this->assertCount(2, $values, 'Should return an array with 2 elements');
+
+        foreach ($values as $value) {
+            $this->assertEquals($value, 'salut', 'Should return "salut"');
+        }
+    }
+
+    /**
      * Test translate using detector method
      */
     public function testTranslateUsingDetector()

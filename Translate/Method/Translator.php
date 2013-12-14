@@ -23,7 +23,13 @@ use Eko\GoogleTranslateBundle\Translate\MethodInterface;
  *
  * @package Eko\GoogleTranslateBundle\Translate\Method
  */
-class Translator extends Method implements MethodInterface {
+class Translator extends Method implements MethodInterface
+{
+    /**
+     * Economic mode delimiter character
+     */
+    const ECONOMIC_DELIMITER = '#';
+
     /**
      * @var Detector $detector Detector method service
      */
@@ -62,13 +68,45 @@ class Translator extends Method implements MethodInterface {
      * Translates given string in given target language from a source language via the Google Translate API.
      * If source language is not defined, it use detector method to detect string language
      *
-     * @param string $query  A query string to translate
-     * @param string $target A target language
-     * @param string $source A source language
+     * @param string|array $query    A query string to translate
+     * @param string       $target   A target language
+     * @param string       $source   A source language
+     * @param boolean      $economic Enable the economic mode? (only 1 request)
      *
      * @return string
      */
-    public function translate($query, $target, $source = null)
+    public function translate($query, $target, $source = null, $economic = false)
+    {
+        if (!is_array($query)) {
+            return $this->handle($query, $target, $source);
+        }
+
+        if ($economic) {
+            $results = $this->handle(join(self::ECONOMIC_DELIMITER, $query), $target, $source);
+            $results = explode(self::ECONOMIC_DELIMITER, $results);
+
+            return array_map('trim', $results);
+        }
+
+        $results = array();
+
+        foreach ($query as $item) {
+            $results[] = $this->handle($item, $target, $source);
+        }
+
+        return $results;
+    }
+
+    /**
+     * Handles a translation request
+     *
+     * @param string $query    A query string to translate
+     * @param string $target   A target language
+     * @param string $source   A source language
+     *
+     * @return string
+     */
+    protected function handle($query, $target, $source = null)
     {
         if (null === $source) {
             $source = $this->getDetector()->detect($query);

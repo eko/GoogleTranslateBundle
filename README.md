@@ -89,6 +89,34 @@ $value = $translator->translate('Hi, this is my text to detect!', 'fr');
 // This will return 'Salut, ceci est mon texte à détecter!'
 ```
 
+### Translate multiple strings
+
+Retrieve the translator service and call the `translate()` method with an array of your strings:
+
+```php
+$translator = $this->get('eko.google_translate.translator');
+$value = $translator->translate(array('Hi', 'This is my second text to detect!'), 'fr', 'en');
+// This will return the following array:
+// array(
+//     0 => 'Salut',
+//     1 => 'Ceci est mon second texte à détecter !',
+// )
+```
+
+Note that you can also use an "economic mode" to translate multiple strings in a single request which is better for your application performances.
+
+Your translations will be concatenated in one single Google request. To use it, simply add `true` to the last argument:
+
+```php
+$translator = $this->get('eko.google_translate.translator');
+$value = $translator->translate(array('Hi', 'This is my second text to detect!'), 'fr', 'en', true);
+// This will return the following array:
+// array(
+//     0 => 'Salut',
+//     1 => 'Ceci est mon second texte à détecter !',
+// )
+```
+
 ### Obtain all languages codes available
 
 Retrieve the languages service and call the `get()` method without any argument:
