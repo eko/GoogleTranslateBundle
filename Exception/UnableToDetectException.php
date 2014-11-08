@@ -13,7 +13,7 @@ namespace Eko\GoogleTranslateBundle\Exception;
 /**
  * Class NotFoundHttpException
  *
- * @package Eko\GoogleTranslateBundle\Exception
+ * @author Vincent Composieux <vincent.composieux@gmail.com>
  */
 class UnableToDetectException extends \Exception
 {

@@ -21,7 +21,7 @@ use Eko\GoogleTranslateBundle\Translate\MethodInterface;
  *
  * This is the class to translate text from a source language to a target one
  *
- * @package Eko\GoogleTranslateBundle\Translate\Method
+ * @author Vincent Composieux <vincent.composieux@gmail.com>
  */
 class Translator extends Method implements MethodInterface
 {
@@ -112,22 +112,24 @@ class Translator extends Method implements MethodInterface
             $source = $this->getDetector()->detect($query);
         }
 
-        $this->getClient()->setConfig(array(
+        $options = array(
             'key'    => $this->apiKey,
             'query'  => $query,
             'source' => $source,
             'target' => $target
-        ));
+        );
 
-        return $this->process();
+        return $this->process($options);
     }
 
     /**
      * Process requests and retrieve JSON result(s)
      *
+     * @param array $options
+     *
      * @return string|null
      */
-    protected function process()
+    protected function process(array $options)
     {
         $result = null;
 
@@ -135,12 +137,12 @@ class Translator extends Method implements MethodInterface
 
         $event = $this->startProfiling(
             $this->getName(),
-            $client->getConfig('query'),
-            $client->getConfig('source'),
-            $client->getConfig('target')
+            $client->getDefaultOption('query'),
+            $client->getDefaultOption('source'),
+            $client->getDefaultOption('target')
         );
 
-        $json = $client->get()->send()->json();
+        $json = $client->get($this->url, $options)->json();
 
         if (isset($json['data']['translations'])) {
             $current = current($json['data']['translations']);

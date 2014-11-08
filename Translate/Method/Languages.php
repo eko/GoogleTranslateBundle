@@ -18,7 +18,7 @@ use Eko\GoogleTranslateBundle\Translate\MethodInterface;
  *
  * This is the class to list all language availables
  *
- * @package Eko\GoogleTranslateBundle\Translate\Method
+ * @author Vincent Composieux <vincent.composieux@gmail.com>
  */
 class Languages extends Method implements MethodInterface {
     /**
@@ -36,31 +36,29 @@ class Languages extends Method implements MethodInterface {
      */
     public function get($target = null)
     {
-        $parameters = array('key' => $this->apiKey,);
+        $options = array('key' => $this->apiKey);
 
         if (null !== $target) {
-            $this->getClient()->setBaseUrl(
-                sprintf('%s&target={target}', $this->url)
-            );
+            $this->url = sprintf('%s&target={target}', $this->url);
 
-            $parameters['target'] = $target;
+            $options['target'] = $target;
         }
 
-        $this->getClient()->setConfig($parameters);
-
-        return $this->process();
+        return $this->process($options);
     }
 
     /**
-     * Process requests and retrieve JSON result
+     * Process request and retrieve JSON result
+     *
+     * @param array $options
      *
      * @return array
      */
-    protected function process()
+    protected function process(array $options)
     {
         $event = $this->startProfiling($this->getName(), 'get');
 
-        $json = $this->getClient()->get()->send()->json();
+        $json = $this->getClient()->get($this->url, $options)->json();
 
         $result = isset($json['data']['languages']) ? $json['data']['languages'] : array();
 

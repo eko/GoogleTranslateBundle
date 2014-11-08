@@ -13,14 +13,14 @@ namespace Eko\GoogleTranslateBundle\Translate;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\Stopwatch\StopwatchEvent;
 
-use Guzzle\Http\Client as GuzzleClient;
+use GuzzleHttp\Client as GuzzleClient;
 
 /**
  * Class Method
  *
  * This is the main Method class that is instancing Guzzle HTTP client
  *
- * @package Eko\GoogleTranslateBundle\Translate
+ * @author Vincent Composieux <vincent.composieux@gmail.com>
  */
 class Method {
     /**
@@ -29,7 +29,7 @@ class Method {
     protected $apiKey = null;
 
     /**
-     * @var Client $client A Guzzle client instance
+     * @var GuzzleClient $client A Guzzle client instance
      */
     protected $client;
 
@@ -62,7 +62,7 @@ class Method {
     public function __construct($apiKey, Stopwatch $stopwatch = null)
     {
         $this->apiKey = $apiKey;
-        $this->client = new GuzzleClient($this->url);
+        $this->client = new GuzzleClient();
 
         $this->stopwatch = $stopwatch;
     }

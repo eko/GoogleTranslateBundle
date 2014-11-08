@@ -17,7 +17,7 @@ class DetectorTest extends \PHPUnit_Framework_TestCase
     protected $detector;
 
     /**
-     * @var \Guzzle\Http\Message\Response mock
+     * @var \GuzzleHttp\Message\Response mock
      */
     protected $responseMock;
 
@@ -27,7 +27,7 @@ class DetectorTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->detector = $this->getMock(
-            '\Eko\GoogleTranslateBundle\Translate\Method\Detector',
+            'Eko\GoogleTranslateBundle\Translate\Method\Detector',
             array('getClient'),
             array('fakeapikey')
         );
@@ -63,7 +63,7 @@ class DetectorTest extends \PHPUnit_Framework_TestCase
             array('data' => array('detections' => array(array(array('language' => Detector::UNDEFINED_LANGUAGE)))))
         ));
 
-        $this->setExpectedException('\Eko\GoogleTranslateBundle\Exception\UnableToDetectException');
+        $this->setExpectedException('Eko\GoogleTranslateBundle\Exception\UnableToDetectException');
 
         $this->detector->detect('undefined');
     }
@@ -75,18 +75,15 @@ class DetectorTest extends \PHPUnit_Framework_TestCase
      */
     protected function getClientMock()
     {
-        $clientMock = $this->getMockBuilder('\Guzzle\Http\ClientInterface')
+        $clientMock = $this->getMockBuilder('GuzzleHttp\ClientInterface')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->responseMock = $this->getMockBuilder('\Guzzle\Http\Message\Response')
+        $this->responseMock = $this->getMockBuilder('GuzzleHttp\Message\Response')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $requestMock = $this->getMock('\Guzzle\Http\Message\RequestInterface');
-
-        $clientMock->expects($this->any())->method('get')->will($this->returnValue($requestMock));
-        $requestMock->expects($this->any())->method('send')->will($this->returnValue($this->responseMock));
+        $clientMock->expects($this->any())->method('get')->will($this->returnValue($this->responseMock));
 
         return $clientMock;
     }

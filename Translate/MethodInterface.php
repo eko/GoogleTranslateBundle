@@ -13,7 +13,7 @@ namespace Eko\GoogleTranslateBundle\Translate;
 /**
  * Interface MethodInterface
  *
- * @package Eko\GoogleTranslateBundle\Translate
+ * @author Vincent Composieux <vincent.composieux@gmail.com>
  */
 interface MethodInterface
 {

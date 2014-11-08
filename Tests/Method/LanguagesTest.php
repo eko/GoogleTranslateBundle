@@ -17,7 +17,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
     protected $languages;
 
     /**
-     * @var \Guzzle\Http\Message\Response mock
+     * @var \GuzzleHttp\Message\Response mock
      */
     protected $responseMock;
 
@@ -27,7 +27,7 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->languages = $this->getMock(
-            '\Eko\GoogleTranslateBundle\Translate\Method\Languages',
+            'Eko\GoogleTranslateBundle\Translate\Method\Languages',
             array('getClient'),
             array('fakeapikey')
         );
@@ -94,18 +94,15 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
      */
     protected function getClientMock()
     {
-        $clientMock = $this->getMockBuilder('\Guzzle\Http\ClientInterface')
+        $clientMock = $this->getMockBuilder('GuzzleHttp\ClientInterface')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->responseMock = $this->getMockBuilder('\Guzzle\Http\Message\Response')
+        $this->responseMock = $this->getMockBuilder('GuzzleHttp\Message\Response')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $requestMock = $this->getMock('\Guzzle\Http\Message\RequestInterface');
-
-        $clientMock->expects($this->any())->method('get')->will($this->returnValue($requestMock));
-        $requestMock->expects($this->any())->method('send')->will($this->returnValue($this->responseMock));
+        $clientMock->expects($this->any())->method('get')->will($this->returnValue($this->responseMock));
 
         return $clientMock;
     }

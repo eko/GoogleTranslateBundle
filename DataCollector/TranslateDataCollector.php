@@ -21,6 +21,8 @@ use Eko\GoogleTranslateBundle\Translate\MethodManager;
  * Class TranslateDataCollector
  *
  * This collects all methods calls that are done in your application
+ *
+ * @author Vincent Composieux <vincent.composieux@gmail.com>
  */
 class TranslateDataCollector extends DataCollector implements DataCollectorInterface
 {

@@ -20,7 +20,7 @@ use Eko\GoogleTranslateBundle\Translate\MethodInterface;
  *
  * This is the class to detect language used for a given text
  *
- * @package Eko\GoogleTranslateBundle\Translate\Method
+ * @author Vincent Composieux <vincent.composieux@gmail.com>
  */
 class Detector extends Method implements MethodInterface {
     /**
@@ -42,30 +42,32 @@ class Detector extends Method implements MethodInterface {
      */
     public function detect($query)
     {
-        $this->getClient()->setConfig(array(
+        $options = array(
             'key'    => $this->apiKey,
             'query'  => $query
-        ));
+        );
 
-        return $this->process();
+        return $this->process($options);
     }
 
     /**
-     * Process requests and retrieve JSON result
+     * Process request and retrieve JSON result
+     *
+     * @param array $options
      *
      * @return string|null
      *
-     * @throws UnableToDetectException if language returned is 'und' (for undefined)
+     * @throws UnableToDetectException
      */
-    protected function process()
+    protected function process(array $options)
     {
         $result = null;
 
         $client = $this->getClient();
 
-        $event = $this->startProfiling($this->getName(), $client->getConfig('query'));
+        $event = $this->startProfiling($this->getName(), $client->getDefaultOption('query'));
 
-        $json = $client->get()->send()->json();
+        $json = $client->get($this->url, $options)->json();
 
         if (isset($json['data']['detections'])) {
             $current = current(current($json['data']['detections']));

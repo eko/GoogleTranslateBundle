@@ -17,7 +17,7 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
     protected $translator;
 
     /**
-     * @var \Guzzle\Http\Message\Response mock
+     * @var \GuzzleHttp\Message\Response mock
      */
     protected $responseMock;
 
@@ -27,7 +27,7 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->translator = $this->getMock(
-            '\Eko\GoogleTranslateBundle\Translate\Method\Translator',
+            'Eko\GoogleTranslateBundle\Translate\Method\Translator',
             array('getClient'),
             array('fakeapikey', $this->getDetectorMock())
         );
@@ -120,7 +120,7 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
      */
     public function getDetectorMock()
     {
-        return $this->getMockBuilder('\Eko\GoogleTranslateBundle\Translate\Method\Detector')
+        return $this->getMockBuilder('Eko\GoogleTranslateBundle\Translate\Method\Detector')
             ->disableOriginalConstructor()
             ->getMock();
     }
@@ -132,18 +132,15 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
      */
     protected function getClientMock()
     {
-        $clientMock = $this->getMockBuilder('\Guzzle\Http\ClientInterface')
+        $clientMock = $this->getMockBuilder('GuzzleHttp\ClientInterface')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->responseMock = $this->getMockBuilder('\Guzzle\Http\Message\Response')
+        $this->responseMock = $this->getMockBuilder('GuzzleHttp\Message\Response')
             ->disableOriginalConstructor()
             ->getMock();
 
-        $requestMock = $this->getMock('\Guzzle\Http\Message\RequestInterface');
-
-        $clientMock->expects($this->any())->method('get')->will($this->returnValue($requestMock));
-        $requestMock->expects($this->any())->method('send')->will($this->returnValue($this->responseMock));
+        $clientMock->expects($this->any())->method('get')->will($this->returnValue($this->responseMock));
 
         return $clientMock;
     }

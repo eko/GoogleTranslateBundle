@@ -17,7 +17,7 @@ use Eko\GoogleTranslateBundle\Translate\MethodInterface;
  *
  * This is the class that manage available methods
  *
- * @package Eko\GoogleTranslateBundle\Translate
+ * @author Vincent Composieux <vincent.composieux@gmail.com>
  */
 class MethodManager
 {
