@@ -31,7 +31,7 @@ class Detector extends Method implements MethodInterface {
     /**
      * @var string $url Google Translate API detector url
      */
-    protected $url = 'https://www.googleapis.com/language/translate/v2/detect?key={key}&q={query}';
+    protected $url = 'https://www.googleapis.com/language/translate/v2/detect';
 
     /**
      * Detect language used for query text given via the Google Translate API
@@ -44,7 +44,7 @@ class Detector extends Method implements MethodInterface {
     {
         $options = array(
             'key'    => $this->apiKey,
-            'query'  => $query
+            'q'  => $query
         );
 
         return $this->process($options);
@@ -67,7 +67,7 @@ class Detector extends Method implements MethodInterface {
 
         $event = $this->startProfiling($this->getName(), $client->getDefaultOption('query'));
 
-        $json = $client->get($this->url, $options)->json();
+        $json = $client->get($this->url, array('query' => $options))->json();
 
         if (isset($json['data']['detections'])) {
             $current = current(current($json['data']['detections']));
