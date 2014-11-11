@@ -38,7 +38,7 @@ class Translator extends Method implements MethodInterface
     /**
      * @var string $url Google Translate API translate url
      */
-    protected $url = 'https://www.googleapis.com/language/translate/v2?key={key}&q={query}&source={source}&target={target}';
+    protected $url = 'https://www.googleapis.com/language/translate/v2';
 
     /**
      * Constructor
@@ -114,7 +114,7 @@ class Translator extends Method implements MethodInterface
 
         $options = array(
             'key'    => $this->apiKey,
-            'query'  => $query,
+            'q'  => $query,
             'source' => $source,
             'target' => $target
         );
@@ -142,7 +142,7 @@ class Translator extends Method implements MethodInterface
             $client->getDefaultOption('target')
         );
 
-        $json = $client->get($this->url, $options)->json();
+        $json = $client->get($this->url, array('query' => $options))->json();
 
         if (isset($json['data']['translations'])) {
             $current = current($json['data']['translations']);
