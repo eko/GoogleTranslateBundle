@@ -43,8 +43,8 @@ class Detector extends Method implements MethodInterface {
     public function detect($query)
     {
         $options = array(
-            'key'    => $this->apiKey,
-            'q'  => $query
+            'key' => $this->apiKey,
+            'q'   => $query
         );
 
         return $this->process($options);
