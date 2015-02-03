@@ -163,3 +163,4 @@ class Translator extends Method implements MethodInterface
         return 'Translator';
     }
 }
+
