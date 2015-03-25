@@ -73,7 +73,7 @@ class Translator extends Method implements MethodInterface
      * @param string       $source   A source language
      * @param boolean      $economic Enable the economic mode? (only 1 request)
      *
-     * @return string
+     * @return array|string
      */
     public function translate($query, $target, $source = null, $economic = false)
     {
