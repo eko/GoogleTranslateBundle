@@ -31,6 +31,14 @@ class Translator extends Method implements MethodInterface
     const ECONOMIC_DELIMITER = '#';
 
     /**
+     * Google API supports a maximum GET size of 2000 bytes.
+     * See https://cloud.google.com/translate/v2/using_rest#detect-WorkingResults
+     * If the query is longer than that, we need to split it up
+     * We use a lower value to account for other parameters that add up.
+     */
+    const MAXIMUM_TEXT_SIZE = 1800;
+
+    /**
      * @var Detector $detector Detector method service
      */
     protected $detector;
@@ -112,14 +120,46 @@ class Translator extends Method implements MethodInterface
             $source = $this->getDetector()->detect($query);
         }
 
-        $options = array(
-            'key'    => $this->apiKey,
-            'q'  => $query,
-            'source' => $source,
-            'target' => $target
-        );
+        // Split up the query if it is too long. See MAXIMUM_TEXT_SIZE description for more info.
+        {
+            $queryArray = array();
+            $remainingQuery = $query;
+            while (strlen($remainingQuery) >= self::MAXIMUM_TEXT_SIZE) {
+                // Get closest breaking character, but not farther than MAXIMUM_TEXT_SIZE characters away.
+                $i = 0;
+                $find = array("\n", ".", " ");
+                    
+                while (false === ($pos = strrpos($remainingQuery, $find[$i], -(strlen($remainingQuery) - self::MAXIMUM_TEXT_SIZE)))) {
+                    $i++;
+                    if ($i >= count($find)) {
+                        break;
+                    }
+                }
+                if (false === $pos || 0 === $pos) {
+                    break;
+                }
 
-        return $this->process($options);
+                // Split.
+                $queryArray[] = substr($remainingQuery, 0, $pos);
+                $remainingQuery = substr($remainingQuery, $pos);
+            }
+            $queryArray[] = $remainingQuery;
+        }
+
+        // Translate piece by piece.
+        $result = '';
+        foreach ($queryArray as $subQuery) {
+            $options = array(
+                'key' => $this->apiKey,
+                'q' => $subQuery,
+                'source' => $source,
+                'target' => $target
+            );
+
+            $result .= $this->process($options);
+        }
+
+        return $result;
     }
 
     /**

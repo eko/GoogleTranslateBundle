@@ -114,6 +114,32 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test translate method with a text that is too long for a single request
+     */
+    public function testLongTranslate()
+    {
+        // Build a long input text, so that the translate method will split it up in two.
+        $text = 'hi. ';
+        $multiplier = 1.5 * Translator::MAXIMUM_TEXT_SIZE / strlen($text);
+        $textInEn = str_repeat("hi. ", $multiplier);
+        $textInFr = str_repeat("salut. ", $multiplier);        
+        $textInFrPart1 = substr($textInFr, 0, strlen($textInFr) / 2);
+        $textInFrPart2 = substr($textInFr, strlen($textInFrPart1));
+
+        // Given
+        $this->responseMock->expects($this->any())->method('json')->will($this->onConsecutiveCalls(
+            array('data' => array('translations' => array(array('translatedText' => $textInFrPart1)))),
+            array('data' => array('translations' => array(array('translatedText' => $textInFrPart2))))
+        ));
+
+        // When
+        $value = $this->translator->translate($textInEn, 'en');
+
+        // Then
+        $this->assertEquals($value, $textInFr, 'Should return "' . $textInFr . '"');
+    }
+
+    /**
      * Returns detector service mock
      *
      * @return \Eko\GoogleTranslateBundle\Translate\Method\Detector
