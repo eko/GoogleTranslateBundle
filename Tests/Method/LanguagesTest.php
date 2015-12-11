@@ -5,14 +5,14 @@ namespace Eko\GoogleTranslateBundle\Tests\Method;
 use Eko\GoogleTranslateBundle\Translate\Method\Languages;
 
 /**
- * Languages class test
+ * Languages class test.
  *
  * @author Vincent Composieux <vincent.composieux@gmail.com>
  */
 class LanguagesTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Languages $languages Languages service
+     * @var Languages Languages service
      */
     protected $languages;
 
@@ -22,14 +22,14 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
     protected $responseMock;
 
     /**
-     * Set up methods services
+     * Set up methods services.
      */
     protected function setUp()
     {
         $this->languages = $this->getMock(
             'Eko\GoogleTranslateBundle\Translate\Method\Languages',
-            array('getClient'),
-            array('fakeapikey')
+            ['getClient'],
+            ['fakeapikey']
         );
 
         $clientMock = $this->getClientMock();
@@ -38,13 +38,13 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test simple get method
+     * Test simple get method.
      */
     public function testSimpleGet()
     {
         // Given
         $this->responseMock->expects($this->any())->method('json')->will($this->returnValue(
-            array('data' => array('languages' => array(array('language' => 'en'), array('language' => 'fr'))))
+            ['data' => ['languages' => [['language' => 'en'], ['language' => 'fr']]]]
         ));
 
         // When
@@ -55,21 +55,21 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
 
         foreach ($values as $value) {
             $this->assertArrayHasKey('language', $value, 'Should have an array key "language"');
-            $this->assertTrue(in_array($value['language'], array('fr', 'en'), 'Language should be "fr" or "en"'));
+            $this->assertTrue(in_array($value['language'], ['fr', 'en'], 'Language should be "fr" or "en"'));
         }
     }
 
     /**
-     * Test get method with a target parameter
+     * Test get method with a target parameter.
      */
     public function testGetWithTarget()
     {
         // Given
         $this->responseMock->expects($this->any())->method('json')->will($this->returnValue(
-            array('data' => array('languages' => array(
-                array('language' => 'en', 'name' => 'Anglais'),
-                array('language' => 'fr', 'name' => 'Français')
-            )))
+            ['data' => ['languages' => [
+                ['language' => 'en', 'name' => 'Anglais'],
+                ['language' => 'fr', 'name' => 'Français'],
+            ]]]
         ));
 
         // When
@@ -82,13 +82,13 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
             $this->assertArrayHasKey('language', $value, 'Should have an array key "language"');
             $this->assertArrayHasKey('name', $value, 'Should have an array key "name"');
 
-            $this->assertTrue(in_array($value['language'], array('fr', 'en'), 'Language should be "fr" or "en"'));
-            $this->assertTrue(in_array($value['name'], array('Français', 'Anglais'), 'Language should be "Français" or "Anglais"'));
+            $this->assertTrue(in_array($value['language'], ['fr', 'en'], 'Language should be "fr" or "en"'));
+            $this->assertTrue(in_array($value['name'], ['Français', 'Anglais'], 'Language should be "Français" or "Anglais"'));
         }
     }
 
     /**
-     * Returns Guzzle HTTP client mock and sets response mock property
+     * Returns Guzzle HTTP client mock and sets response mock property.
      *
      * @return \PHPUnit_Framework_MockObject_MockObject
      */

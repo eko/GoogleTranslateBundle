@@ -10,10 +10,8 @@
 
 namespace Eko\GoogleTranslateBundle\Translate;
 
-use Eko\GoogleTranslateBundle\Translate\MethodInterface;
-
 /**
- * Class MethodManager
+ * Class MethodManager.
  *
  * This is the class that manage available methods
  *
@@ -24,10 +22,10 @@ class MethodManager
     /**
      * @var array Methods available
      */
-    protected $methods = array();
+    protected $methods = [];
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param array $methods
      */
@@ -41,7 +39,7 @@ class MethodManager
     }
 
     /**
-     * Returns all methods available
+     * Returns all methods available.
      *
      * @return array
      */

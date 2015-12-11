@@ -5,14 +5,14 @@ namespace Eko\GoogleTranslateBundle\Tests\Method;
 use Eko\GoogleTranslateBundle\Translate\Method\Translator;
 
 /**
- * Translator class test
+ * Translator class test.
  *
  * @author Vincent Composieux <vincent.composieux@gmail.com>
  */
 class TranslatorTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Translator $translator Translator service
+     * @var Translator Translator service
      */
     protected $translator;
 
@@ -22,14 +22,14 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
     protected $responseMock;
 
     /**
-     * Set up methods services
+     * Set up methods services.
      */
     protected function setUp()
     {
         $this->translator = $this->getMock(
             'Eko\GoogleTranslateBundle\Translate\Method\Translator',
-            array('getClient'),
-            array('fakeapikey', $this->getDetectorMock())
+            ['getClient'],
+            ['fakeapikey', $this->getDetectorMock()]
         );
 
         $clientMock = $this->getClientMock();
@@ -38,13 +38,13 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test simple translate method
+     * Test simple translate method.
      */
     public function testSimpleTranslate()
     {
         // Given
         $this->responseMock->expects($this->any())->method('json')->will($this->returnValue(
-            array('data' => array('translations' => array(array('translatedText' => 'salut'))))
+            ['data' => ['translations' => [['translatedText' => 'salut']]]]
         ));
 
         // When
@@ -55,17 +55,17 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test multiple translate method using an array
+     * Test multiple translate method using an array.
      */
     public function testMultipleTranslate()
     {
         // Given
         $this->responseMock->expects($this->any())->method('json')->will($this->returnValue(
-            array('data' => array('translations' => array(array('translatedText' => 'salut'))))
+            ['data' => ['translations' => [['translatedText' => 'salut']]]]
         ));
 
         // When
-        $values = $this->translator->translate(array('hi', 'hi'), 'fr', 'en');
+        $values = $this->translator->translate(['hi', 'hi'], 'fr', 'en');
 
         // Then
         $this->assertCount(2, $values, 'Should return an array with 2 elements');
@@ -76,17 +76,17 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test multiple translate method using an array and the economic mode
+     * Test multiple translate method using an array and the economic mode.
      */
     public function testMultipleEconomicTranslate()
     {
         // Given
         $this->responseMock->expects($this->once())->method('json')->will($this->returnValue(
-            array('data' => array('translations' => array(array('translatedText' => 'salut # salut'))))
+            ['data' => ['translations' => [['translatedText' => 'salut # salut']]]]
         ));
 
         // When
-        $values = $this->translator->translate(array('hi', 'hi'), 'fr', 'en', true);
+        $values = $this->translator->translate(['hi', 'hi'], 'fr', 'en', true);
 
         // Then
         $this->assertCount(2, $values, 'Should return an array with 2 elements');
@@ -97,13 +97,13 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test translate using detector method
+     * Test translate using detector method.
      */
     public function testTranslateUsingDetector()
     {
         // Given
         $this->responseMock->expects($this->any())->method('json')->will($this->returnValue(
-            array('data' => array('translations' => array(array('translatedText' => 'comment allez-vous ?'))))
+            ['data' => ['translations' => [['translatedText' => 'comment allez-vous ?']]]]
         ));
 
         // When
@@ -114,33 +114,33 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test translate method with a text that is too long for a single request
+     * Test translate method with a text that is too long for a single request.
      */
     public function testLongTranslate()
     {
         // Build a long input text, so that the translate method will split it up in two.
         $text = 'hi. ';
         $multiplier = 1.5 * Translator::MAXIMUM_TEXT_SIZE / strlen($text);
-        $textInEn = str_repeat("hi. ", $multiplier);
-        $textInFr = str_repeat("salut. ", $multiplier);        
+        $textInEn = str_repeat('hi. ', $multiplier);
+        $textInFr = str_repeat('salut. ', $multiplier);
         $textInFrPart1 = substr($textInFr, 0, strlen($textInFr) / 2);
         $textInFrPart2 = substr($textInFr, strlen($textInFrPart1));
 
         // Given
         $this->responseMock->expects($this->any())->method('json')->will($this->onConsecutiveCalls(
-            array('data' => array('translations' => array(array('translatedText' => $textInFrPart1)))),
-            array('data' => array('translations' => array(array('translatedText' => $textInFrPart2))))
+            ['data' => ['translations' => [['translatedText' => $textInFrPart1]]]],
+            ['data' => ['translations' => [['translatedText' => $textInFrPart2]]]]
         ));
 
         // When
         $value = $this->translator->translate($textInEn, 'en');
 
         // Then
-        $this->assertEquals($value, $textInFr, 'Should return "' . $textInFr . '"');
+        $this->assertEquals($value, $textInFr, 'Should return "'.$textInFr.'"');
     }
 
     /**
-     * Returns detector service mock
+     * Returns detector service mock.
      *
      * @return \Eko\GoogleTranslateBundle\Translate\Method\Detector
      */
@@ -152,7 +152,7 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Returns Guzzle HTTP client mock and sets response mock property
+     * Returns Guzzle HTTP client mock and sets response mock property.
      *
      * @return \PHPUnit_Framework_MockObject_MockObject
      */

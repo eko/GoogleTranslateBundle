@@ -11,14 +11,14 @@
 namespace Eko\GoogleTranslateBundle\Translate;
 
 /**
- * Interface MethodInterface
+ * Interface MethodInterface.
  *
  * @author Vincent Composieux <vincent.composieux@gmail.com>
  */
 interface MethodInterface
 {
     /**
-     * Returns method name
+     * Returns method name.
      *
      * @return string
      */

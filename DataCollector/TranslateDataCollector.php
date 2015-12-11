@@ -10,15 +10,14 @@
 
 namespace Eko\GoogleTranslateBundle\DataCollector;
 
-use Symfony\Component\HttpKernel\DataCollector\DataCollector;
-use Symfony\Component\HttpKernel\DataCollector\DataCollectorInterface;
+use Eko\GoogleTranslateBundle\Translate\MethodManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
-use Eko\GoogleTranslateBundle\Translate\MethodManager;
+use Symfony\Component\HttpKernel\DataCollector\DataCollector;
+use Symfony\Component\HttpKernel\DataCollector\DataCollectorInterface;
 
 /**
- * Class TranslateDataCollector
+ * Class TranslateDataCollector.
  *
  * This collects all methods calls that are done in your application
  *
@@ -32,7 +31,7 @@ class TranslateDataCollector extends DataCollector implements DataCollectorInter
     protected $manager;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param MethodManager $manager
      */
@@ -52,7 +51,7 @@ class TranslateDataCollector extends DataCollector implements DataCollectorInter
     }
 
     /**
-     * Returns profiles data
+     * Returns profiles data.
      *
      * @return array
      */

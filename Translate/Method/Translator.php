@@ -10,14 +10,12 @@
 
 namespace Eko\GoogleTranslateBundle\Translate\Method;
 
+use Eko\GoogleTranslateBundle\Translate\Method;
+use Eko\GoogleTranslateBundle\Translate\MethodInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
 
-use Eko\GoogleTranslateBundle\Translate\Method;
-use Eko\GoogleTranslateBundle\Translate\Method\Detector;
-use Eko\GoogleTranslateBundle\Translate\MethodInterface;
-
 /**
- * Class Translator
+ * Class Translator.
  *
  * This is the class to translate text from a source language to a target one
  *
@@ -26,7 +24,7 @@ use Eko\GoogleTranslateBundle\Translate\MethodInterface;
 class Translator extends Method implements MethodInterface
 {
     /**
-     * Economic mode delimiter character
+     * Economic mode delimiter character.
      */
     const ECONOMIC_DELIMITER = '#';
 
@@ -39,17 +37,17 @@ class Translator extends Method implements MethodInterface
     const MAXIMUM_TEXT_SIZE = 1800;
 
     /**
-     * @var Detector $detector Detector method service
+     * @var Detector Detector method service
      */
     protected $detector;
 
     /**
-     * @var string $url Google Translate API translate url
+     * @var string Google Translate API translate url
      */
     protected $url = 'https://www.googleapis.com/language/translate/v2';
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string    $apiKey    Google Translate API key
      * @param Detector  $detector  A Detector service
@@ -63,7 +61,7 @@ class Translator extends Method implements MethodInterface
     }
 
     /**
-     * Returns detector service
+     * Returns detector service.
      *
      * @return Detector
      */
@@ -74,12 +72,12 @@ class Translator extends Method implements MethodInterface
 
     /**
      * Translates given string in given target language from a source language via the Google Translate API.
-     * If source language is not defined, it use detector method to detect string language
+     * If source language is not defined, it use detector method to detect string language.
      *
      * @param string|array $query    A query string to translate
      * @param string       $target   A target language
      * @param string       $source   A source language
-     * @param boolean      $economic Enable the economic mode? (only 1 request)
+     * @param bool         $economic Enable the economic mode? (only 1 request)
      *
      * @return array|string
      */
@@ -90,13 +88,13 @@ class Translator extends Method implements MethodInterface
         }
 
         if ($economic) {
-            $results = $this->handle(join(self::ECONOMIC_DELIMITER, $query), $target, $source);
+            $results = $this->handle(implode(self::ECONOMIC_DELIMITER, $query), $target, $source);
             $results = explode(self::ECONOMIC_DELIMITER, $results);
 
             return array_map('trim', $results);
         }
 
-        $results = array();
+        $results = [];
 
         foreach ($query as $item) {
             $results[] = $this->handle($item, $target, $source);
@@ -106,11 +104,11 @@ class Translator extends Method implements MethodInterface
     }
 
     /**
-     * Handles a translation request
+     * Handles a translation request.
      *
-     * @param string $query    A query string to translate
-     * @param string $target   A target language
-     * @param string $source   A source language
+     * @param string $query  A query string to translate
+     * @param string $target A target language
+     * @param string $source A source language
      *
      * @return string
      */
@@ -122,13 +120,13 @@ class Translator extends Method implements MethodInterface
 
         // Split up the query if it is too long. See MAXIMUM_TEXT_SIZE description for more info.
         {
-            $queryArray = array();
+            $queryArray = [];
             $remainingQuery = $query;
             while (strlen($remainingQuery) >= self::MAXIMUM_TEXT_SIZE) {
                 // Get closest breaking character, but not farther than MAXIMUM_TEXT_SIZE characters away.
                 $i = 0;
-                $find = array("\n", ".", " ");
-                    
+                $find = ["\n", '.', ' '];
+
                 while (false === ($pos = strrpos($remainingQuery, $find[$i], -(strlen($remainingQuery) - self::MAXIMUM_TEXT_SIZE)))) {
                     $i++;
                     if ($i >= count($find)) {
@@ -149,12 +147,12 @@ class Translator extends Method implements MethodInterface
         // Translate piece by piece.
         $result = '';
         foreach ($queryArray as $subQuery) {
-            $options = array(
-                'key' => $this->apiKey,
-                'q' => $subQuery,
+            $options = [
+                'key'    => $this->apiKey,
+                'q'      => $subQuery,
                 'source' => $source,
-                'target' => $target
-            );
+                'target' => $target,
+            ];
 
             $result .= $this->process($options);
         }
@@ -163,7 +161,7 @@ class Translator extends Method implements MethodInterface
     }
 
     /**
-     * Process requests and retrieve JSON result(s)
+     * Process requests and retrieve JSON result(s).
      *
      * @param array $options
      *
@@ -182,7 +180,7 @@ class Translator extends Method implements MethodInterface
             $client->getDefaultOption('target')
         );
 
-        $json = $client->get($this->url, array('query' => $options))->json();
+        $json = $client->get($this->url, ['query' => $options])->json();
 
         if (isset($json['data']['translations'])) {
             $current = current($json['data']['translations']);
@@ -203,4 +201,3 @@ class Translator extends Method implements MethodInterface
         return 'Translator';
     }
 }
-

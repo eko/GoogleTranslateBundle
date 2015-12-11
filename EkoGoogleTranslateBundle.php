@@ -13,11 +13,9 @@ namespace Eko\GoogleTranslateBundle;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 /**
- * Class EkoGoogleTranslateBundle
+ * Class EkoGoogleTranslateBundle.
  *
  * This bundle is used to translate using Google Translate API
- *
- * @package Eko\GoogleTranslateBundle
  */
 class EkoGoogleTranslateBundle extends Bundle
 {

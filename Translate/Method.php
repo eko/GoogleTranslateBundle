@@ -10,51 +10,51 @@
 
 namespace Eko\GoogleTranslateBundle\Translate;
 
+use GuzzleHttp\Client as GuzzleClient;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\Stopwatch\StopwatchEvent;
 
-use GuzzleHttp\Client as GuzzleClient;
-
 /**
- * Class Method
+ * Class Method.
  *
  * This is the main Method class that is instancing Guzzle HTTP client
  *
  * @author Vincent Composieux <vincent.composieux@gmail.com>
  */
-class Method {
+class Method
+{
     /**
-     * @var string $apiKey Google Translate API key
+     * @var string Google Translate API key
      */
     protected $apiKey = null;
 
     /**
-     * @var GuzzleClient $client A Guzzle client instance
+     * @var GuzzleClient A Guzzle client instance
      */
     protected $client;
 
     /**
-     * @var string $url API translation url
+     * @var string API translation url
      */
     protected $url = null;
 
     /**
-     * @var array $profiles Symfony profiler profiles data
+     * @var array Symfony profiler profiles data
      */
-    protected $profiles = array();
+    protected $profiles = [];
 
     /**
-     * @var Stopwatch $stopwatch Symfony profiler Stopwatch service
+     * @var Stopwatch Symfony profiler Stopwatch service
      */
     protected $stopwatch;
 
     /**
-     * @var integer
+     * @var int
      */
     protected $counter = 1;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string    $apiKey    API key retrieved from configuration
      * @param Stopwatch $stopwatch Symfony profiler Stopwatch service
@@ -68,7 +68,7 @@ class Method {
     }
 
     /**
-     * Returns Guzzle HTTP client instance
+     * Returns Guzzle HTTP client instance.
      *
      * @return GuzzleClient
      */
@@ -78,7 +78,7 @@ class Method {
     }
 
     /**
-     * Returns profiled data
+     * Returns profiled data.
      *
      * @return array
      */
@@ -88,7 +88,7 @@ class Method {
     }
 
     /**
-     * Starts profiling
+     * Starts profiling.
      *
      * @param string $name   Method name
      * @param string $query  Query text
@@ -100,7 +100,7 @@ class Method {
     protected function startProfiling($name, $query, $source = null, $target = null)
     {
         if ($this->stopwatch instanceof Stopwatch) {
-            $this->profiles[$this->counter] = array(
+            $this->profiles[$this->counter] = [
                 'query'        => urldecode($query),
                 'source'       => $source,
                 'target'       => $target,
@@ -108,14 +108,14 @@ class Method {
                 'memory_start' => memory_get_usage(true),
                 'memory_end'   => null,
                 'memory_peak'  => null,
-            );
+            ];
 
             return $this->stopwatch->start($name);
         }
     }
 
     /**
-     * Stops the profiling
+     * Stops the profiling.
      *
      * @param StopwatchEvent $event A stopwatchEvent instance
      */
@@ -124,11 +124,11 @@ class Method {
         if ($this->stopwatch instanceof Stopwatch) {
             $event->stop();
 
-            $values = array(
+            $values = [
                 'duration'    => $event->getDuration(),
                 'memory_end'  => memory_get_usage(true),
                 'memory_peak' => memory_get_peak_usage(true),
-            );
+            ];
 
             $this->profiles[$this->counter] = array_merge($this->profiles[$this->counter], $values);
 

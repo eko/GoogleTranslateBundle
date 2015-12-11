@@ -14,21 +14,22 @@ use Eko\GoogleTranslateBundle\Translate\Method;
 use Eko\GoogleTranslateBundle\Translate\MethodInterface;
 
 /**
- * Class Languages
+ * Class Languages.
  *
  * This is the class to list all language availables
  *
  * @author Vincent Composieux <vincent.composieux@gmail.com>
  */
-class Languages extends Method implements MethodInterface {
+class Languages extends Method implements MethodInterface
+{
     /**
-     * @var string $url Google Translate API languages base url
+     * @var string Google Translate API languages base url
      */
     protected $url = 'https://www.googleapis.com/language/translate/v2/languages?key={key}';
 
     /**
      * Retrieves all languages availables with Google Translate API
-     * If a target language is specified, returns languages name translated in target language
+     * If a target language is specified, returns languages name translated in target language.
      *
      * @param string $target A target language to translate languages names
      *
@@ -36,7 +37,7 @@ class Languages extends Method implements MethodInterface {
      */
     public function get($target = null)
     {
-        $options = array('key' => $this->apiKey);
+        $options = ['key' => $this->apiKey];
 
         if (null !== $target) {
             $this->url = sprintf('%s&target={target}', $this->url);
@@ -48,7 +49,7 @@ class Languages extends Method implements MethodInterface {
     }
 
     /**
-     * Process request and retrieve JSON result
+     * Process request and retrieve JSON result.
      *
      * @param array $options
      *
@@ -58,9 +59,9 @@ class Languages extends Method implements MethodInterface {
     {
         $event = $this->startProfiling($this->getName(), 'get');
 
-        $json = $this->getClient()->get($this->url, array('query' => $options))->json();
+        $json = $this->getClient()->get($this->url, ['query' => $options])->json();
 
-        $result = isset($json['data']['languages']) ? $json['data']['languages'] : array();
+        $result = isset($json['data']['languages']) ? $json['data']['languages'] : [];
 
         $this->stopProfiling($event, $this->getName(), $result);
 

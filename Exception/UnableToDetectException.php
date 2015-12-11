@@ -11,17 +11,17 @@
 namespace Eko\GoogleTranslateBundle\Exception;
 
 /**
- * Class NotFoundHttpException
+ * Class NotFoundHttpException.
  *
  * @author Vincent Composieux <vincent.composieux@gmail.com>
  */
 class UnableToDetectException extends \Exception
 {
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string     $message  The message
-     * @param integer    $code     The code
+     * @param int        $code     The code
      * @param \Exception $previous The exception
      */
     public function __construct($message = null, $code = 0, \Exception $previous = null)

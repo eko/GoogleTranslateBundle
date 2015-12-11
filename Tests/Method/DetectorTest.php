@@ -5,14 +5,14 @@ namespace Eko\GoogleTranslateBundle\Tests\Method;
 use Eko\GoogleTranslateBundle\Translate\Method\Detector;
 
 /**
- * Detector class test
+ * Detector class test.
  *
  * @author Vincent Composieux <vincent.composieux@gmail.com>
  */
 class DetectorTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Detector $detector Detector service
+     * @var Detector Detector service
      */
     protected $detector;
 
@@ -22,14 +22,14 @@ class DetectorTest extends \PHPUnit_Framework_TestCase
     protected $responseMock;
 
     /**
-     * Set up methods services
+     * Set up methods services.
      */
     protected function setUp()
     {
         $this->detector = $this->getMock(
             'Eko\GoogleTranslateBundle\Translate\Method\Detector',
-            array('getClient'),
-            array('fakeapikey')
+            ['getClient'],
+            ['fakeapikey']
         );
 
         $clientMock = $this->getClientMock();
@@ -38,13 +38,13 @@ class DetectorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test simple detect method
+     * Test simple detect method.
      */
     public function testSimpleDetect()
     {
         // Given
         $this->responseMock->expects($this->any())->method('json')->will($this->returnValue(
-            array('data' => array('detections' => array(array(array('language' => 'en')))))
+            ['data' => ['detections' => [[['language' => 'en']]]]]
         ));
 
         // When
@@ -55,12 +55,12 @@ class DetectorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test exception detect method
+     * Test exception detect method.
      */
     public function testExceptionDetect()
     {
         $this->responseMock->expects($this->any())->method('json')->will($this->returnValue(
-            array('data' => array('detections' => array(array(array('language' => Detector::UNDEFINED_LANGUAGE)))))
+            ['data' => ['detections' => [[['language' => Detector::UNDEFINED_LANGUAGE]]]]]
         ));
 
         $this->setExpectedException('Eko\GoogleTranslateBundle\Exception\UnableToDetectException');
@@ -69,7 +69,7 @@ class DetectorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Returns Guzzle HTTP client mock and sets response mock property
+     * Returns Guzzle HTTP client mock and sets response mock property.
      *
      * @return \PHPUnit_Framework_MockObject_MockObject
      */
