@@ -14,7 +14,7 @@
     "require": {
         "php": "^5.3|^7.0",
         "symfony/framework-bundle": "^2.0|^3.0",
-        "guzzlehttp/guzzle": "5.0.*@dev"
+        "guzzlehttp/guzzle": "~5.0"
     },
     "autoload": {
         "psr-4": { "Eko\\GoogleTranslateBundle\\": "" }
