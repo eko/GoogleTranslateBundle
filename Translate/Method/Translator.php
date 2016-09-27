@@ -111,6 +111,7 @@ class Translator extends Method implements MethodInterface
      * @param string $target    A target language
      * @param string $source    A source language
      * @param bool   $plainText The source (and response) are plain text
+     *
      * @return string
      */
     protected function handle($query, $target, $source = null, $plainText = false)
