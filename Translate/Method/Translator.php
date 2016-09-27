@@ -74,21 +74,22 @@ class Translator extends Method implements MethodInterface
      * Translates given string in given target language from a source language via the Google Translate API.
      * If source language is not defined, it use detector method to detect string language.
      *
-     * @param string|array $query    A query string to translate
-     * @param string       $target   A target language
-     * @param string       $source   A source language
-     * @param bool         $economic Enable the economic mode? (only 1 request)
+     * @param string|array $query     A query string to translate
+     * @param string       $target    A target language
+     * @param string       $source    A source language
+     * @param bool         $economic  Enable the economic mode? (only 1 request)
+     * @param bool         $plainText The source (and response) are plain text
      *
      * @return array|string
      */
-    public function translate($query, $target, $source = null, $economic = false)
+    public function translate($query, $target, $source = null, $economic = false, $plainText = false)
     {
         if (!is_array($query)) {
-            return $this->handle($query, $target, $source);
+            return $this->handle($query, $target, $source, $plainText);
         }
 
         if ($economic) {
-            $results = $this->handle(implode(self::ECONOMIC_DELIMITER, $query), $target, $source);
+            $results = $this->handle(implode(self::ECONOMIC_DELIMITER, $query), $target, $source, $plainText);
             $results = explode(self::ECONOMIC_DELIMITER, $results);
 
             return array_map('trim', $results);
@@ -97,7 +98,7 @@ class Translator extends Method implements MethodInterface
         $results = [];
 
         foreach ($query as $item) {
-            $results[] = $this->handle($item, $target, $source);
+            $results[] = $this->handle($item, $target, $source, $plainText);
         }
 
         return $results;
@@ -106,13 +107,13 @@ class Translator extends Method implements MethodInterface
     /**
      * Handles a translation request.
      *
-     * @param string $query  A query string to translate
-     * @param string $target A target language
-     * @param string $source A source language
-     *
+     * @param string $query     A query string to translate
+     * @param string $target    A target language
+     * @param string $source    A source language
+     * @param bool   $plainText The source (and response) are plain text
      * @return string
      */
-    protected function handle($query, $target, $source = null)
+    protected function handle($query, $target, $source = null, $plainText = false)
     {
         if (null === $source) {
             $source = $this->getDetector()->detect($query);
@@ -152,6 +153,7 @@ class Translator extends Method implements MethodInterface
                 'q'      => $subQuery,
                 'source' => $source,
                 'target' => $target,
+                'format' => ($plainText ? 'text' : 'html'),
             ];
 
             $result .= $this->process($options);
