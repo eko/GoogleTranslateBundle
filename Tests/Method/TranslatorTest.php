@@ -55,6 +55,24 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test plain text option of the simple translate method.
+     */
+    public function testPlainTextTranslate()
+    {
+        // Given
+        $this->responseMock->expects($this->any())->method('json')->will($this->returnValue(
+            ['data' => ['translations' => [['translatedText' => "J'ai"]]]]
+        ));
+
+        // When
+        $value = $this->translator->translate('I have', 'fr', 'en', true);
+
+        // Then
+        $this->assertEquals($value, "J'ai", 'Should return "J\'ai"');
+    }
+    
+    
+    /**
      * Test multiple translate method using an array.
      */
     public function testMultipleTranslate()
