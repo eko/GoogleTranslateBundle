@@ -54,15 +54,16 @@ class Method
     protected $counter = 1;
 
     /**
-     * Constructor.
+     * Method constructor.
      *
-     * @param string    $apiKey    API key retrieved from configuration
-     * @param Stopwatch $stopwatch Symfony profiler Stopwatch service
+     * @param string       $apiKey    API key retrieved from configuration
+     * @param GuzzleClient $client
+     * @param Stopwatch    $stopwatch Symfony profiler Stopwatch service
      */
-    public function __construct($apiKey, Stopwatch $stopwatch = null)
+    public function __construct($apiKey, GuzzleClient $client, Stopwatch $stopwatch = null)
     {
         $this->apiKey = $apiKey;
-        $this->client = new GuzzleClient();
+        $this->client = $client;
 
         $this->stopwatch = $stopwatch;
     }

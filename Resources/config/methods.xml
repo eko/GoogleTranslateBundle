@@ -21,19 +21,26 @@
             <tag name="eko.google_translate.method" />
 
             <argument>%eko_google_translate.api_key%</argument>
+            <argument type="service" id="eko.guzzle_client" />
         </service>
 
         <service id="eko.google_translate.languages" class="Eko\GoogleTranslateBundle\Translate\Method\Languages">
             <tag name="eko.google_translate.method" />
 
             <argument>%eko_google_translate.api_key%</argument>
+            <argument type="service" id="eko.guzzle_client" />
         </service>
 
         <service id="eko.google_translate.translator" class="Eko\GoogleTranslateBundle\Translate\Method\Translator">
             <tag name="eko.google_translate.method" />
 
             <argument>%eko_google_translate.api_key%</argument>
+            <argument type="service" id="eko.guzzle_client" />
             <argument type="service" id="eko.google_translate.detector" />
+        </service>
+        
+        <service id="eko.guzzle_client" class="GuzzleHttp\Client">
+            
         </service>
     </services>
 </container>
