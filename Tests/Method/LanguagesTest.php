@@ -28,13 +28,9 @@ class LanguagesTest extends \PHPUnit_Framework_TestCase
     {
         $this->languages = $this->getMock(
             'Eko\GoogleTranslateBundle\Translate\Method\Languages',
-            ['getClient'],
-            ['fakeapikey']
+            null,
+            ['fakeapikey', $this->getClientMock()]
         );
-
-        $clientMock = $this->getClientMock();
-
-        $this->languages->expects($this->any())->method('getClient')->will($this->returnValue($clientMock));
     }
 
     /**

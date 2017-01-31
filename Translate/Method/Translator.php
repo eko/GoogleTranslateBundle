@@ -12,7 +12,7 @@ namespace Eko\GoogleTranslateBundle\Translate\Method;
 
 use Eko\GoogleTranslateBundle\Translate\Method;
 use Eko\GoogleTranslateBundle\Translate\MethodInterface;
-use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\ClientInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
 
 /**
@@ -50,12 +50,12 @@ class Translator extends Method implements MethodInterface
     /**
      * Constructor.
      *
-     * @param string       $apiKey    Google Translate API key
-     * @param GuzzleClient $client
-     * @param Detector     $detector  A Detector service
-     * @param Stopwatch    $stopwatch Symfony profiler stopwatch service
+     * @param string          $apiKey    Google Translate API key
+     * @param ClientInterface $client
+     * @param Detector        $detector  A Detector service
+     * @param Stopwatch       $stopwatch Symfony profiler stopwatch service
      */
-    public function __construct($apiKey, GuzzleClient $client, Detector $detector, Stopwatch $stopwatch = null)
+    public function __construct($apiKey, ClientInterface $client, Detector $detector, Stopwatch $stopwatch = null)
     {
         $this->detector = $detector;
 

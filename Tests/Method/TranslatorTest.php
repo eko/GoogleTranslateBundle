@@ -28,13 +28,9 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
     {
         $this->translator = $this->getMock(
             'Eko\GoogleTranslateBundle\Translate\Method\Translator',
-            ['getClient'],
-            ['fakeapikey', $this->getDetectorMock()]
+            null,
+            ['fakeapikey', $this->getClientMock(), $this->getDetectorMock()]
         );
-
-        $clientMock = $this->getClientMock();
-
-        $this->translator->expects($this->any())->method('getClient')->will($this->returnValue($clientMock));
     }
 
     /**
@@ -70,8 +66,7 @@ class TranslatorTest extends \PHPUnit_Framework_TestCase
         // Then
         $this->assertEquals($value, "J'ai", 'Should return "J\'ai"');
     }
-    
-    
+
     /**
      * Test multiple translate method using an array.
      */

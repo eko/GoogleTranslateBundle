@@ -28,13 +28,9 @@ class DetectorTest extends \PHPUnit_Framework_TestCase
     {
         $this->detector = $this->getMock(
             'Eko\GoogleTranslateBundle\Translate\Method\Detector',
-            ['getClient'],
-            ['fakeapikey']
+            null,
+            ['fakeapikey', $this->getClientMock()]
         );
-
-        $clientMock = $this->getClientMock();
-
-        $this->detector->expects($this->any())->method('getClient')->will($this->returnValue($clientMock));
     }
 
     /**
