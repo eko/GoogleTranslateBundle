@@ -185,7 +185,8 @@ class Translator extends Method implements MethodInterface
             $client->getDefaultOption('target')
         );
 
-        $json = $client->get($this->url, ['query' => $options])->json();
+        $response = $client->get($this->url, ['query' => $options]);
+        $json = json_decode($response->getBody()->getContents(), true);
 
         if (isset($json['data']['translations'])) {
             $current = current($json['data']['translations']);
