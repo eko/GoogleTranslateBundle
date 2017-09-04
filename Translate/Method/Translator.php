@@ -180,9 +180,9 @@ class Translator extends Method implements MethodInterface
 
         $event = $this->startProfiling(
             $this->getName(),
-            $client->getDefaultOption('query'),
-            $client->getDefaultOption('source'),
-            $client->getDefaultOption('target')
+            $client->getConfig('query'),
+            $client->getConfig('source'),
+            $client->getConfig('target')
         );
 
         $response = $client->get($this->url, ['query' => $options]);
