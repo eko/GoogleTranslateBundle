@@ -65,9 +65,10 @@ class Detector extends Method implements MethodInterface
 
         $client = $this->getClient();
 
-        $event = $this->startProfiling($this->getName(), $client->getDefaultOption('query'));
+        $event = $this->startProfiling($this->getName(), $client->getConfig('query'));
 
-        $json = $client->get($this->url, ['query' => $options])->json();
+        $response = $client->get($this->url, ['query' => $options]);
+        $json = json_decode($response->getBody()->getContents(), true);
 
         if (isset($json['data']['detections'])) {
             $current = current(current($json['data']['detections']));
