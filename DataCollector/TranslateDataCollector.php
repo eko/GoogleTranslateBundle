@@ -67,4 +67,9 @@ class TranslateDataCollector extends DataCollector implements DataCollectorInter
     {
         return 'eko.google_translate.data_collector.translate';
     }
+
+    public function reset()
+    {
+        return true;
+    }
 }
